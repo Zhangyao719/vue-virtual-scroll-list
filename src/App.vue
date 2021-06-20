@@ -17,6 +17,11 @@
   color: #2c3e50;
 }
 
+.common-container {
+  width: 1260px;
+  margin: 0 auto;
+}
+
 #nav {
   padding: 30px;
 
@@ -28,5 +33,12 @@
       color: #42b983;
     }
   }
+}
+li {
+  list-style-type: none;
+}
+.error-capture {
+  border: 1px solid #ff057a !important;
+  background-color: #ffe6f1 !important;
 }
 </style>
