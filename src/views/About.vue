@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapMutations } from "vuex";
 import VirtualList from "./virtual-list/virtual-list.vue";
 import { getAngle } from "@/utils";
 import { debounce } from "lodash";
@@ -23,55 +23,36 @@ export default {
     iconClockwise,
     iconCounterclockwise,
   },
-  computed: {
-    ...mapState(["isHorizontal"]),
-  },
   methods: {
-    ...mapMutations(["setPositionState"]),
+    ...mapMutations(["setCaptureDirection", "setCapturePositionInfo"]),
     rotate: debounce(function (status) {
-      this.setPositionState();
+      this.setCaptureDirection();
       const images = document.querySelectorAll(".cover");
       const currentAngle = getAngle(images[0]); // 保存当前图片旋转的角度
       switch (status) {
         case 1:
           // 只转90度
           if (currentAngle === 90) {
-            this.setPositionState(true);
+            this.setCaptureDirection(true);
             break;
           }
-          images.forEach((img) => {
-            img.style.transform = `rotate(${currentAngle + 90}deg)`;
-            this.resetStyle(img);
+          this.setCapturePositionInfo({
+            rotateType: 1,
+            currentAngle: currentAngle + 90,
           });
           break;
         case -1:
           if (currentAngle === -90) {
-            this.setPositionState(true);
+            this.setCaptureDirection(true);
             break;
           }
-          images.forEach((img) => {
-            img.style.transform = `rotate(${currentAngle - 90}deg)`;
-            this.resetStyle(img);
+          this.setCapturePositionInfo({
+            rotateType: -1,
+            currentAngle: currentAngle - 90,
           });
           break;
       }
     }, 300),
-    resetStyle(dom) {
-      if (this.isHorizontal) {
-        // 调整图片样式
-        // dom.style.width = "40%";
-        // dom.style.margin = "0 10px 0 0";
-        // 父级高度
-        dom.parentNode.style.height = dom.offsetWidth + 17 + "px";
-        // 字体定位
-        // dom.nextElementSibling.style =
-        //   "position: absolute; left: 50%; bottom: -10px; transform: translate(-50%)";
-      } else {
-        // dom.nextElementSibling.style = "position: unset; transform: unset";
-        // dom.style.width = "50%";
-        // dom.parentNode.style.height = "unset";
-      }
-    },
   },
 };
 </script>

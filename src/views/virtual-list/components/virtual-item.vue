@@ -1,33 +1,38 @@
 <template>
   <ul class="row-imgs">
     <li
-      :class="['img-container', { 'vertical-li': !isHorizontal }]"
+      :class="[
+        'img-container',
+        { 'vertical-li': !capturePositionInfo.isHorizontal },
+      ]"
       v-for="item in source.rowLine"
       :key="item.time_index"
-      :style="`height: ${isHorizontal ? horizontalLiHeight + 'px;' : 'unset;'}`"
+      :style="`height: ${
+        capturePositionInfo.isHorizontal ? horizontalLiHeight + 'px;' : 'unset;'
+      }`"
     >
       <img
         :src="item.image_url"
         alt=""
         :class="[
           'cover',
-          { 'vertical-img': !isHorizontal },
-          { 'horizontal-img': isHorizontal },
+          { 'vertical-img': !capturePositionInfo.isHorizontal },
+          { 'horizontal-img': capturePositionInfo.isHorizontal },
           { 'error-capture': item.error_id },
           {
             'hover-capture':
               captureHover.hover && captureHover.current === item.time_index,
           },
         ]"
+        :style="`transform: rotate(${capturePositionInfo.currentAngle}deg);`"
         @mouseover="onMouseMove({ hover: true, current: item.time_index })"
         @mouseleave="onMouseMove({ hover: false, current: item.time_index })"
-        @click="aa"
       />
       <span
         :class="[
           'test-time',
-          { 'vertical-time': !isHorizontal },
-          { 'horizontal-time': isHorizontal },
+          { 'vertical-time': !capturePositionInfo.isHorizontal },
+          { 'horizontal-time': capturePositionInfo.isHorizontal },
         ]"
       >
         {{ format(item.time_index) }}
@@ -53,16 +58,19 @@ export default {
     };
   },
   computed: {
-    ...mapState(["captureHover", "isHorizontal"]),
+    ...mapState(["captureHover", "capturePositionInfo"]),
   },
   watch: {
-    isHorizontal(val) {
-      if (val) {
-        setTimeout(() => {
-          this.horizontalLiHeight =
-            document.querySelector(".cover").offsetWidth + 17;
-        });
-      }
+    capturePositionInfo: {
+      deep: true,
+      handler(val) {
+        if (val.isHorizontal) {
+          setTimeout(() => {
+            this.horizontalLiHeight =
+              document.querySelector(".cover").offsetWidth + 17;
+          });
+        }
+      },
     },
   },
   methods: {
@@ -70,9 +78,6 @@ export default {
     format,
     onMouseMove(e) {
       this.setCaptureHover(e);
-    },
-    aa() {
-      console.log(111, this.horizontalLiHeight, 222);
     },
   },
 };

@@ -213,7 +213,12 @@ export default new Vuex.Store({
         uuid: "c27jhlq5t9fo2ra23brg",
       },
     ],
-    isHorizontal: false, // 图片是否水平
+    capturePositionInfo: {
+      isHorizontal: false, // 图片是否水平
+      rotateType: 0, // 顺逆时针 1顺指针 -1逆时针
+      rowHeight: 0, // 行高
+      currentAngle: 0, // 当前角度
+    },
     captureHover: {
       // 判断截图是否被hover
       hover: false,
@@ -221,12 +226,18 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    setPositionState(state, boolean) {
-      state.isHorizontal =
-        typeof boolean !== "undefined" ? boolean : !state.isHorizontal;
+    setCaptureDirection(state, boolean) {
+      state.capturePositionInfo.isHorizontal =
+        typeof boolean !== "undefined"
+          ? boolean
+          : !state.capturePositionInfo.isHorizontal;
     },
     setCaptureHover(state, payload) {
       Object.assign(state.captureHover, payload);
+    },
+    setCapturePositionInfo(state, payload) {
+      Object.assign(state.capturePositionInfo, payload);
+      console.log(payload, state.capturePositionInfo.currentAngle);
     },
   },
   actions: {},
