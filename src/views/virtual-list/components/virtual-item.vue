@@ -12,7 +12,7 @@
       }`"
     >
       <img
-        :src="item.image_url"
+        src="@/assets/cover.jpg"
         alt=""
         :class="[
           'cover',
@@ -134,7 +134,7 @@ li {
   transform: translate(-50%);
 }
 .hover-capture {
-  cursor: pointer;
+  cursor: zoom-in;
   border: 1px solid rgba(179, 229, 252, 0.8);
   background-color: rgba(179, 229, 252, 0.3);
 
