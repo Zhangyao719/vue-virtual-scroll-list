@@ -6,9 +6,9 @@
         { 'vertical-li': !capturePositionInfo.isHorizontal },
       ]"
       v-for="item in source.rowLine"
-      :key="item.time_index"
+      :key="item.image_index"
       :style="`height: ${
-        capturePositionInfo.isHorizontal ? horizontalLiHeight + 'px;' : 'unset;'
+        capturePositionInfo.isHorizontal ? horizontalLiHeight + 'px;' : '440px;'
       }`"
     >
       <img
@@ -35,7 +35,7 @@
           { 'horizontal-time': capturePositionInfo.isHorizontal },
         ]"
       >
-        {{ format(item.time_index) }}
+        {{ item.time_index }}
       </span>
     </li>
   </ul>

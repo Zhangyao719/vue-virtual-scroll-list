@@ -1,15 +1,15 @@
 <template>
   <div class="card-container">
-    <button @click="aa">2</button>
+    <!-- <button @click="aa">2</button>
     <button @click="bb">10</button>
-    <button @click="cc">bottom</button>
-    <img src="@/assets/cover.jpg" alt="" />
+    <button @click="cc">bottom</button> -->
+    <!-- <img src="@/assets/cover.jpg" alt="" /> -->
     <VirtualList
-      style="height: 700px; overflow-y: auto; background-color: #f9f9f9"
+      :style="listStyle"
       data-key="rowIndex"
       :data-sources="captureChunks"
       :data-component="VirtualItem"
-      :keeps="30"
+      :keeps="10"
       ref="virtual"
       v-viewer="{ movable: false }"
     />
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import VirtualList from "vue-virtual-scroll-list";
 import VirtualItem from "./components/virtual-item.vue";
 import { chunk } from "lodash";
@@ -33,8 +33,9 @@ export default {
   },
   computed: {
     ...mapState(["captures"]),
+    ...mapGetters(["images"]),
     captureChunks() {
-      return chunk(this.captures, 4).map((item, index) => ({
+      return chunk(this.images, 4).map((item, index) => ({
         rowLine: item,
         rowIndex: index,
       }));
@@ -43,6 +44,12 @@ export default {
   data() {
     return {
       VirtualItem,
+      listStyle: `
+        width: 1220px;
+        height: 700px;
+        overflow-y: auto;
+        background-color: #f9f9f9;
+      `,
     };
   },
   methods: {
